@@ -47,13 +47,13 @@ Assuming you have `Node.js` and `Grunt` installed.
 npm install
 ```
 
-## To Test
+### Test
 
 ```bash
 grunt test
 ```
 
-### To Build
+### Build
 
 ```bash
 grunt
