@@ -1,3 +1,4 @@
+// see https://github.com/expressjs/serve-static
 var connect = require('connect'),
     serveStatic = require('serve-static');
 

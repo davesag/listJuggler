@@ -32,7 +32,7 @@
   <script>
     $(document).ready(function(){
       var myFrame = $("iframe"),
-          myDocument = $(myFrame.get(0).contentDocument),
+          myDocument = myFrame.contents(),
           myElements;
       myDocument.ready(function(){
         myElements = myDocument.find("ul, ol");
