@@ -35,7 +35,7 @@ module.exports = (grunt) ->
         dest: "dist/jquery-<%= pkg.name %>.<%= pkg.version %>.min.js"
 
     qunit:
-      files: ["test/**/*.html"]
+      files: ["test/**/*Test.html"]
 
     jshint:
       src:

@@ -17,33 +17,25 @@
 </head>
 <body>
   <div class="container">
-    <div class="row">
-      <div class="col-sm-6">
-        <h2>Yet another List</h2>
-        <ol>
-          <li>One</li>
-          <li>Two</li>
-          <li>Buckle</li>
-          <li>My</li>
-          <li>Shoe</li>
-        </ol>
-      </div>
-      <div class="col-sm-6">
-        <h2>And another unordered List</h2>
-        <ul>
-          <li>Don't</li>
-          <li>They</li>
-          <li>know</li>
-          <li>It's</li>
-          <li>Christmas</li>
-          <li>Time?</li>
-        </ul>
-      </div>
+    <div class="jumbotron">
+      <h2>listJuggler <small>Juggles lists good!</small></h2>
+      <p>When the lists are in an iFrame but the script is in the parent page.</p>
+      <a class="btn btn-primary" href="example.html">See regular Example</a>
+      <a class="btn btn-primary" href="iFrameExample.html">See other iFrame Example</a>
+    </div>
+  <div class="container">
+    <h2>And in an iFrame</h2>
+    <div class="well center-block">
+      <iframe src="iFrameContentsScriptless.html" width="100%"></iframe>
     </div>
   </div>
   <script>
     $(document).ready(function(){
-      $("ul, ol").listJuggler();
+      var iFrame = $("iframe");
+      iFrame.contents().find("ul, ol").listJuggler({
+        document: iFrame.get(0).contentDocument,
+        window: iFrame.get(0).contentWindow
+      });
     });
   </script>
 </body>

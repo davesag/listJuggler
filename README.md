@@ -24,8 +24,7 @@ See the example in the `example/` folder
 
 ### Options
 
-There is only one option which is a callback that is fired when
-the list item drops.
+`callback`: a callback that is fired when the list item drops.
 
 ```javascript
 $(document).ready(function(){
@@ -33,6 +32,20 @@ $(document).ready(function(){
     callback: function(item){
       console.log("yay - an item dropped", item);
     }
+  });
+});
+```
+
+You can also override the default `document` and `window` instances in cases
+where you are running this script against lists that are contained
+in an iFrame but the script itself is running in the parent window.
+This happens when you are writing **browser extensions** for example.
+
+```javascript
+$(document).ready(function(){
+  $("ol").listJuggler({
+    document: $("iframe").get(0).contentDocument
+    window: $("iframe").get(0).contentWindow
   });
 });
 ```
@@ -63,7 +76,7 @@ This will output the final distribution files into the `dist/` folder, prefixed 
 
 Files created are:
 
-* `jquery-listJuggler.1.0.0.js` - the 'developer' version.
-* `jquery-listJuggler.1.0.0.min.js` The minified version for production use.
-* `jquery-listJuggler.1.0.0.min.map` The `sourcemap` file for debugging using the minified version.
+* `jquery-listJuggler.1.0.1.js` - the 'developer' version.
+* `jquery-listJuggler.1.0.1.min.js` The minified version for production use.
+* `jquery-listJuggler.1.0.1.min.map` The `sourcemap` file for debugging using the minified version.
 

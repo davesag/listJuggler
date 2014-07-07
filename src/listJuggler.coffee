@@ -114,20 +114,20 @@
           theList.scroll =
             moveX: 0
             moveY: 0
-            maxX: $(document).width() - $(window).width()
-            maxY: $(document).height() - $(window).height()
+            maxX: $(opts.document).width() - $(opts.window).width()
+            maxY: $(opts.document).height() - $(opts.window).height()
 
-          theList.scroll.scrollY = window.setInterval(->
-            t = $(window).scrollTop()
+          theList.scroll.scrollY = opts.window.setInterval(->
+            t = $(opts.window).scrollTop()
             if theList.scroll.moveY > 0 and t < theList.scroll.maxY or theList.scroll.moveY < 0 and t > 0
-              $(window).scrollTop t + theList.scroll.moveY
+              $(opts.window).scrollTop t + theList.scroll.moveY
               theList.draggedItem.css "top", theList.draggedItem.offset().top + theList.scroll.moveY + 1
             return
           , 10)
-          theList.scroll.scrollX = window.setInterval(->
-            l = $(window).scrollLeft()
+          theList.scroll.scrollX = opts.window.setInterval(->
+            l = $(opts.window).scrollLeft()
             if theList.scroll.moveX > 0 and l < theList.scroll.maxX or theList.scroll.moveX < 0 and l > 0
-              $(window).scrollLeft l + theList.scroll.moveX
+              $(opts.window).scrollLeft l + theList.scroll.moveX
               theList.draggedItem.css "left", theList.draggedItem.offset().left + theList.scroll.moveX + 1
             return
           , 10)
@@ -137,8 +137,8 @@
             return
 
           theList.setPos evt.pageX, evt.pageY
-          $(document).on "mousemove", theList.swapItems
-          $(document).on "mouseup", theList.dropItem
+          $(opts.document).on "mousemove", theList.swapItems
+          $(opts.document).on "mouseup", theList.dropItem
           return
 
         
@@ -156,10 +156,10 @@
               false
 
           #set x or y auto-scroll amount
-          y -= $(window).scrollTop()
-          x -= $(window).scrollLeft()
-          y = Math.max(0, y - $(window).height() + 5) + Math.min(0, y - 5)
-          x = Math.max(0, x - $(window).width() + 5) + Math.min(0, x - 5)
+          y -= $(opts.window).scrollTop()
+          x -= $(opts.window).scrollLeft()
+          y = Math.max(0, y - $(opts.window).height() + 5) + Math.min(0, y - 5)
+          x = Math.max(0, x - $(opts.window).width() + 5) + Math.min(0, x - 5)
           theList.scroll.moveX = (if x is 0 then 0 else x * 5 / Math.abs(x))
           theList.scroll.moveY = (if y is 0 then 0 else y * 5 / Math.abs(y))
           
@@ -198,15 +198,15 @@
           theList.placeHolderItem.before theList.draggedItem
           theList.placeHolderItem.remove()
           $(":data(droptarget)").remove()
-          window.clearInterval theList.scroll.scrollY
-          window.clearInterval theList.scroll.scrollX
+          opts.window.clearInterval theList.scroll.scrollY
+          opts.window.clearInterval theList.scroll.scrollX
           
           #if position changed call callback
           opts.callback.apply theList.draggedItem  unless theList.draggedItem.data("original-position") is $(listCache).index(theList) + "-" + theList.getItems().index(theList.draggedItem)
           theList.draggedItem.removeData "original-position"
           theList.draggedItem = null
-          $(document).off "mousemove", theList.swapItems
-          $(document).off "mouseup", theList.dropItem
+          $(opts.document).off "mousemove", theList.swapItems
+          $(opts.document).off "mouseup", theList.dropItem
           false
 
         #swap the draggedItem (represented visually by placeholder) with the list item the it has been dragged on top of
@@ -267,6 +267,8 @@
   $.fn.listJuggler.defaults =
     callback: ->
       return
+    document: document
+    window: window
 
   return
 ) jQuery, self.document, self
