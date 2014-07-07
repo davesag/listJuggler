@@ -31,10 +31,16 @@
   </div>
   <script>
     $(document).ready(function(){
-      var iFrame = $("iframe");
-      iFrame.contents().find("ul, ol").listJuggler({
-        document: iFrame.get(0).contentDocument,
-        window: iFrame.get(0).contentWindow
+      var myFrame = $("iframe"),
+          myDocument = $(myFrame.get(0).contentDocument),
+          myElements;
+      myDocument.ready(function(){
+        myElements = myDocument.find("ul, ol");
+        console.debug("iFrame", myFrame, "document", myDocument, "elements", myElements);
+        myElements.listJuggler({
+          document: myFrame.get(0).contentDocument,
+          window: myFrame.get(0).contentWindow
+        });
       });
     });
   </script>

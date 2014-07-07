@@ -8,16 +8,21 @@
       $(@selector).trigger "listJuggler-destroy"
       return
     opts = $.extend true, {}, $.fn.listJuggler.defaults, options
+    # console.debug "opts", opts
+    # console.debug "checking document", document, opts.document, document is opts.document
+    # console.debug "checking window", window, opts.window, window is opts.window
+    # console.debug "comparing window.document with document", window.document, document, window.document is document
+    # console.debug "comparing opts.window.document with opts.document", opts.window.document, opts.document, opts.window.document is opts.document
     listCache = []
     theList = null
     lastPosition = null
-
+    console.debug "this is", @
     @each (i, cont) ->
       tag = $(this).prop "tagName"
       throw "You can only apply this plugin to ordered or unordered lists" if ALLOWED.indexOf(tag) is -1
       listItemTag = "li"
       placeHolderTemplate = "<" + listItemTag + ">&nbsp;</" + listItemTag + ">"
-
+      console.debug "container", cont, "is in iframe's document", $.contains(opts.document, cont)
       listTemplate =
         draggedItem: null
         placeHolderItem: null
