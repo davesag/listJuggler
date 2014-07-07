@@ -33,14 +33,34 @@
     $(document).ready(function(){
       var myFrame = $("iframe"),
           myDocument = $(myFrame.get(0).contentDocument),
-          myElements;
+          myElements, timedOut = false, timeoutTimer;
       myDocument.ready(function(){
-        myElements = myDocument.find("ul, ol");
-        console.debug("iFrame", myFrame, "document", myDocument, "elements", myElements);
-        myElements.listJuggler({
-          document: myFrame.get(0).contentDocument,
-          window: myFrame.get(0).contentWindow
+        timeoutTimer = setTimeout(function(){
+          console.error("Search for elements timed out.");
+          timedOut = true;
+        }, 9999);
+        function findElements() {
+          if (!timedOut) {
+            myElements = myDocument.find("ul, ol");
+            console.debug("Looking for elements", myElements);
+            if (myElements.length === 0) {
+              setTimeout(function(){
+                findElements();
+              }, 500);
+            } else {
+              $(document).trigger("found-elements");
+            }
+          }
+        }
+        $(document).on("found-elements", function(evt){
+          clearTimeout(timeoutTimer);
+          console.debug("success - iFrame", myFrame, "document", myDocument, "elements", myElements);
+          myElements.listJuggler({
+            document: myFrame.get(0).contentDocument,
+            window: myFrame.get(0).contentWindow
+          });
         });
+        findElements();
       });
     });
   </script>
