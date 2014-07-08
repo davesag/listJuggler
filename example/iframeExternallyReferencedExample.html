@@ -14,6 +14,7 @@
   <!-- In your actual code you'd use the scripts in the dist/ folder. -->
   <script src="../build/dataMatcher.js"></script>
   <script src="../build/listJuggler.js"></script>
+  <script src="../build/iFrameReady.js"></script>
 </head>
 <body>
   <div class="container">
@@ -34,7 +35,7 @@
       var myFrame = $("iframe"),
           myDocument = myFrame.contents(),
           myElements;
-      myDocument.ready(function(){
+      iFrameReady(myFrame.get(0), function() {
         myElements = myDocument.find("ul, ol");
         console.debug("success - iFrame", myFrame, "document", myDocument, "elements", myElements);
         myElements.listJuggler({
