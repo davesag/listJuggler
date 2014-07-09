@@ -50,7 +50,8 @@ $(document).ready(function(){
 
 ### Examples
 
-See the examples in the `example/` folder
+See the examples in the `example/` folder or see them all running live at
+https://davesag.github.io/listJuggler
 
 To properly get the iFrameExternallyReferencedExample to work you need to
 run the examples within a local web server.  To do this simply run
