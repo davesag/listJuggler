@@ -14,28 +14,38 @@
   <!-- In your actual code you'd use the scripts in the dist/ folder. -->
   <script src="../build/dataMatcher.js"></script>
   <script src="../build/listJuggler.js"></script>
+  <script src="../build/iFrameReady.js"></script>
 </head>
 <body>
   <div class="container">
     <div class="jumbotron">
       <h2>listJuggler <small>Juggles lists good!</small></h2>
-      <p>Even when they are in an iFrame</p>
+      <p>When the lists are in an iFrame but the script is in the parent page.</p>
       <a class="btn btn-primary" href="example.html">See regular Example</a>
-      <a class="btn btn-primary" href="iFrameExternallyReferencedExample.html">or an Externally referenced iFrame example</a>
+      <a class="btn btn-primary" href="iFrameExample.html">See other iFrame Example</a>
     </div>
   <div class="container">
-    <h2>And in an iFrame</h2>
+    <h2>And in an iFrame <small>with the script in the parent</small></h2>
     <div class="well center-block">
-      <iframe src="iFrameContents.html" width="100%"></iframe>
+      <iframe src="iFrameContentsScriptless.html" width="100%"></iframe>
     </div>
   </div>
   <div class="container">
     <a class="btn btn-success pull-right" href="https://github.com/davesag/listJuggler">Project Source</a>
-    <a class="btn btn-success" href="https://github.com/davesag/listJuggler/blob/master/example/iFrameExample.html">Source Code for this page</a>
+    <a class="btn btn-success" href="https://github.com/davesag/listJuggler/blob/master/example/iframeExternallyReferencedExample.html">Source Code for this page</a>
   </div>
   <script>
     $(document).ready(function(){
-      $("ul, ol").listJuggler();
+      var myFrame = $("iframe"),
+          myDocument, myElements;
+      iFrameReady(myFrame.get(0), function() {
+        myDocument = myFrame.contents();
+        myElements = myDocument.find("ul, ol");
+        myElements.listJuggler({
+          document: myFrame.get(0).contentDocument,
+          window: myFrame.get(0).contentWindow
+        });
+      });
     });
   </script>
 </body>
