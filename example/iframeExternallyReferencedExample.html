@@ -26,11 +26,10 @@
     </div>
   <div class="container">
     <h2>And in an iFrame <small>with the script in the parent</small></h2>
-    <div class="alert alert-danger">
-      <p class="text-danger">
+    <div class="alert alert-warning">
+      <p class="text-warning">
         <span class="glyphicon glyphicon-bullhorn"></span>
-        Not currently working. See
-        <a class="alert-link" href="http://stackoverflow.com/questions/24603580/how-can-i-access-the-dom-elements-within-an-iframe">this Stackoverflow question</a> for more details.
+        Not currently working.
       </p>
     </div>
     <div class="well center-block">
@@ -43,9 +42,9 @@
   <script>
     $(document).ready(function(){
       var myFrame = $("iframe"),
-          myDocument = myFrame.contents(),
-          myElements;
+          myDocument, myElements;
       iFrameReady(myFrame.get(0), function() {
+        myDocument = myFrame.contents();
         myElements = myDocument.find("ul, ol");
         console.debug("success - iFrame", myFrame, "document", myDocument, "elements", myElements);
         myElements.listJuggler({
