@@ -39,4 +39,7 @@
     unordered = this.elems.find "ul"
     strictEqual(unordered.listJuggler(), unordered, "unordered list should be chainable")
 
+  # TODO: fully test the actual events
+  # see http://davetayls.me/blog/2012/11/30/testing-jquery-kinetic-with-grunt-and-qunit/
+  
 ) jQuery

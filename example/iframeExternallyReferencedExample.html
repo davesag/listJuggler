@@ -26,19 +26,12 @@
     </div>
   <div class="container">
     <h2>And in an iFrame <small>with the script in the parent</small></h2>
-    <div class="alert alert-danger">
-      <p class="text-danger">
-        <span class="glyphicon glyphicon-bullhorn"></span>
-        Not currently working. See
-        <a class="alert-link" href="http://stackoverflow.com/questions/24603580/how-can-i-access-the-dom-elements-within-an-iframe">this Stackoverflow question</a> for more details.
-      </p>
-    </div>
     <div class="well center-block">
       <iframe src="iFrameContentsScriptless.html" width="100%"></iframe>
     </div>
   </div>
   <div class="container">
-    <a class="btn btn-danger" href="https://github.com/davesag/listJuggler/blob/scriptless-iframe/example/iframeExternallyReferencedExample.html">Source Code</a>
+    <a class="btn btn-success" href="https://github.com/davesag/listJuggler/blob/master/example/iframeExternallyReferencedExample.html">Source Code</a>
   </div>
   <script>
     $(document).ready(function(){
@@ -47,7 +40,6 @@
       iFrameReady(myFrame.get(0), function() {
         myDocument = myFrame.contents();
         myElements = myDocument.find("ul, ol");
-        console.debug("success - iFrame", myFrame, "document", myDocument, "elements", myElements);
         myElements.listJuggler({
           document: myFrame.get(0).contentDocument,
           window: myFrame.get(0).contentWindow

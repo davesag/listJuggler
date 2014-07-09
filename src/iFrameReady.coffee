@@ -1,6 +1,9 @@
 # adapted from an answer by @jfriend00 in
 # http://stackoverflow.com/questions/24603580/how-can-i-access-the-dom-elements-within-an-iframe
 window.iFrameReady = (iFrame, fn) ->
+  timer = undefined
+  fired = false
+
   ready = ->
     unless fired
       fired = true
@@ -8,7 +11,7 @@ window.iFrameReady = (iFrame, fn) ->
       fn.call this
     return
   readyState = ->
-    ready.call this  if @readyState is "complete"
+    ready.call this if @readyState is "complete"
     return
   
   # cross platform event handler for compatibility with older IE versions
@@ -38,8 +41,7 @@ window.iFrameReady = (iFrame, fn) ->
       # still same old original document, so keep looking for content or new document
       timer = setTimeout(checkLoaded, 1)
     return
-  timer = undefined
-  fired = false
+
   addEvent iFrame, "load", ->
     ready.call iFrame.contentDocument or iFrame.contentWindow.document
     return

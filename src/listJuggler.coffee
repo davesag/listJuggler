@@ -8,22 +8,16 @@
       $(@selector).trigger "listJuggler-destroy"
       return
     opts = $.extend true, {}, $.fn.listJuggler.defaults, options
-    # console.debug "opts", opts
-    # console.debug "checking document", document, opts.document, document is opts.document
-    # console.debug "checking window", window, opts.window, window is opts.window
-    # console.debug "comparing window.document with document", window.document, document, window.document is document
-    # console.debug "comparing opts.window.document with opts.document", opts.window.document, opts.document, opts.window.document is opts.document
     listCache = []
-    theList = null
+    theItem = null
     lastPosition = null
-    console.debug "this is", @
     @each (i, cont) ->
       tag = $(this).prop "tagName"
       throw "You can only apply this plugin to ordered or unordered lists" if ALLOWED.indexOf(tag) is -1
       listItemTag = "li"
       placeHolderTemplate = "<" + listItemTag + ">&nbsp;</" + listItemTag + ">"
-      console.debug "container", cont, "is in iframe's document", $.contains(opts.document, cont)
       listTemplate =
+        text: ""
         draggedItem: null
         placeHolderItem: null
         position: null
@@ -38,9 +32,9 @@
           @styleDragHandlers true
           return
         uninit: ->
-          theList = listCache[$(this).data("list-id")]
-          $(theList.container).off("mousedown", theList.grabItem).off "listJuggler-destroy"
-          theList.styleDragHandlers false
+          theItem = listCache[$(this).data("list-id")]
+          $(theItem.container).off("mousedown", theItem.grabItem).off "listJuggler-destroy"
+          theItem.styleDragHandlers false
           return
         getItems: ->
           $(@container).children listItemTag
@@ -60,55 +54,55 @@
           $dragHandle = $(dragHandle)
           $dragHandle.data "cursor", $dragHandle.css("cursor")
           $dragHandle.css "cursor", "move"
-          theList = listCache[$(this).data("list-id")]
-          $listContainer = $(theList.container)
+          theItem = listCache[$(this).data("list-id")]
+          $listItemContainer = $(theItem.container)
           item = this
           iLikeToMoveItMoveIt = ->
-            theList.dragStart.call item, evt
-            $listContainer.off "mousemove", iLikeToMoveItMoveIt
+            theItem.dragStart.call item, evt
+            $listItemContainer.off "mousemove", iLikeToMoveItMoveIt
             return
-          $listContainer.mousemove(iLikeToMoveItMoveIt).mouseup ->
-            $listContainer.off "mousemove", iLikeToMoveItMoveIt
+          $listItemContainer.mousemove(iLikeToMoveItMoveIt).mouseup ->
+            $listItemContainer.off "mousemove", iLikeToMoveItMoveIt
             $dragHandle.css "cursor", $dragHandle.data("cursor")
             return
           return
 
         dragStart: (evt) ->
-          theList.dropItem() if theList?.draggedItem?
-          theList = listCache[$(this).data("list-id")]
-          theList.draggedItem = $(evt.target).closest(listItemTag)
+          theItem.dropItem() if theItem?.draggedItem?
+          theItem = listCache[$(this).data("list-id")]
+          theItem.draggedItem = $(evt.target).closest(listItemTag)
           
           #record current position so on dragend we know if the dragged item changed position or not
-          theList.draggedItem.data "original-position", $(this).data("list-id") + "-" + theList.getItems().index(theList.draggedItem)
+          theItem.draggedItem.data "original-position", $(this).data("list-id") + "-" + theItem.getItems().index(theItem.draggedItem)
           
           #calculate mouse offset relative to draggedItem
-          mt = parseInt(theList.draggedItem.css("marginTop"))
-          ml = parseInt(theList.draggedItem.css("marginLeft"))
-          theList.offset = theList.draggedItem.offset()
-          theList.offset.top = evt.pageY - theList.offset.top + ((if isNaN(mt) then 0 else mt)) - 1
-          theList.offset.left = evt.pageX - theList.offset.left + ((if isNaN(ml) then 0 else ml)) - 1
+          mt = parseInt(theItem.draggedItem.css("marginTop"))
+          ml = parseInt(theItem.draggedItem.css("marginLeft"))
+          theItem.offset = theItem.draggedItem.offset()
+          theItem.offset.top = evt.pageY - theItem.offset.top + ((if isNaN(mt) then 0 else mt)) - 1
+          theItem.offset.left = evt.pageX - theItem.offset.left + ((if isNaN(ml) then 0 else ml)) - 1
           
-          $listContainer = $(theList.container)
-          containerHeight = if $listContainer.outerHeight() is 0
-            Math.max(1, Math.round(0.5 + theList.getItems().size() * theList.draggedItem.outerWidth() / $listContainer.outerWidth())) * theList.draggedItem.outerHeight()
+          $listItemContainer = $(theItem.container)
+          containerHeight = if $listItemContainer.outerHeight() is 0
+            Math.max(1, Math.round(0.5 + theItem.getItems().size() * theItem.draggedItem.outerWidth() / $listItemContainer.outerWidth())) * theItem.draggedItem.outerHeight()
           else
-            $listContainer.outerHeight()
-          theList.offsetLimit = $listContainer.offset()
-          theList.offsetLimit.right = theList.offsetLimit.left + $listContainer.outerWidth() - theList.draggedItem.outerWidth()
-          theList.offsetLimit.bottom = theList.offsetLimit.top + containerHeight - theList.draggedItem.outerHeight()
+            $listItemContainer.outerHeight()
+          theItem.offsetLimit = $listItemContainer.offset()
+          theItem.offsetLimit.right = theItem.offsetLimit.left + $listItemContainer.outerWidth() - theItem.draggedItem.outerWidth()
+          theItem.offsetLimit.bottom = theItem.offsetLimit.top + containerHeight - theItem.draggedItem.outerHeight()
           
           #create placeholder item
-          h = theList.draggedItem.height()
-          w = theList.draggedItem.width()
-          theList.draggedItem.after placeHolderTemplate
-          theList.placeHolderItem = theList.draggedItem.next().css(
+          h = theItem.draggedItem.height()
+          w = theItem.draggedItem.width()
+          theItem.draggedItem.after placeHolderTemplate
+          theItem.placeHolderItem = theItem.draggedItem.next().css(
             height: h
             width: w
           ).data "is-placeholder", true
           
-          originalStyle = theList.draggedItem.attr "style"
-          theList.draggedItem.data "original-style", (if originalStyle then originalStyle else "")
-          theList.draggedItem.css
+          originalStyle = theItem.draggedItem.attr "style"
+          theItem.draggedItem.data "original-style", (if originalStyle then originalStyle else "")
+          theItem.draggedItem.css
             position: "absolute"
             opacity: 0.8
             "z-index": 999
@@ -116,24 +110,24 @@
             width: w
 
           #auto-scroll setup
-          theList.scroll =
+          theItem.scroll =
             moveX: 0
             moveY: 0
             maxX: $(opts.document).width() - $(opts.window).width()
             maxY: $(opts.document).height() - $(opts.window).height()
 
-          theList.scroll.scrollY = opts.window.setInterval(->
+          theItem.scroll.scrollY = opts.window.setInterval(->
             t = $(opts.window).scrollTop()
-            if theList.scroll.moveY > 0 and t < theList.scroll.maxY or theList.scroll.moveY < 0 and t > 0
-              $(opts.window).scrollTop t + theList.scroll.moveY
-              theList.draggedItem.css "top", theList.draggedItem.offset().top + theList.scroll.moveY + 1
+            if theItem.scroll.moveY > 0 and t < theItem.scroll.maxY or theItem.scroll.moveY < 0 and t > 0
+              $(opts.window).scrollTop t + theItem.scroll.moveY
+              theItem.draggedItem.css "top", theItem.draggedItem.offset().top + theItem.scroll.moveY + 1
             return
           , 10)
-          theList.scroll.scrollX = opts.window.setInterval(->
+          theItem.scroll.scrollX = opts.window.setInterval(->
             l = $(opts.window).scrollLeft()
-            if theList.scroll.moveX > 0 and l < theList.scroll.maxX or theList.scroll.moveX < 0 and l > 0
-              $(opts.window).scrollLeft l + theList.scroll.moveX
-              theList.draggedItem.css "left", theList.draggedItem.offset().left + theList.scroll.moveX + 1
+            if theItem.scroll.moveX > 0 and l < theItem.scroll.maxX or theItem.scroll.moveX < 0 and l > 0
+              $(opts.window).scrollLeft l + theItem.scroll.moveX
+              theItem.draggedItem.css "left", theItem.draggedItem.offset().left + theItem.scroll.moveX + 1
             return
           , 10)
           
@@ -141,18 +135,23 @@
             l.buildPositionTable()
             return
 
-          theList.setPos evt.pageX, evt.pageY
-          $(opts.document).on "mousemove", theList.swapItems
-          $(opts.document).on "mouseup", theList.dropItem
+          theItem.setPos evt.pageX, evt.pageY
+          $(opts.document).on "mousemove", theItem.swapItems
+          $(opts.document).on "mouseup", theItem.dropItem
           return
 
         
         #set position of draggedItem
         setPos: (x, y) ->
-          top = Math.min(@offsetLimit.bottom, Math.max(y - @offset.top, @offsetLimit.top))
-          left = Math.min(@offsetLimit.right, Math.max(x - @offset.left, @offsetLimit.left))
+          top = Math.min(@offsetLimit.bottom,
+                          Math.max(y - @offset.top,
+                                    @offsetLimit.top))
+          left = Math.min(@offsetLimit.right,
+                          Math.max(x - @offset.left,
+                                    @offsetLimit.left))
           
-          #adjust top, left calculations to parent element instead of window if it's relative or absolute
+          # adjust top, left calculations to parent element instead of 
+          # opts.window if it's relative or absolute
           @draggedItem.parents().each ->
             if $(this).css("position") isnt "static" and $(this).css("display") isnt "table"
               offset = $(this).offset()
@@ -165,8 +164,8 @@
           x -= $(opts.window).scrollLeft()
           y = Math.max(0, y - $(opts.window).height() + 5) + Math.min(0, y - 5)
           x = Math.max(0, x - $(opts.window).width() + 5) + Math.min(0, x - 5)
-          theList.scroll.moveX = (if x is 0 then 0 else x * 5 / Math.abs(x))
-          theList.scroll.moveY = (if y is 0 then 0 else y * 5 / Math.abs(y))
+          theItem.scroll.moveX = (if x is 0 then 0 else x * 5 / Math.abs(x))
+          theItem.scroll.moveY = (if y is 0 then 0 else y * 5 / Math.abs(y))
           
           #move draggedItem to new mouse cursor location
           @draggedItem.css
@@ -178,8 +177,8 @@
         buildPositionTable: ->
           position = []
           @getItems().not([
-            theList.draggedItem[0]
-            theList.placeHolderItem[0]
+            theItem.draggedItem[0]
+            theItem.placeHolderItem[0]
           ]).each (i) ->
             $this = $(this)
             loc = $this.offset()
@@ -188,42 +187,41 @@
             loc.elm = this
             position[i] = loc
             return
-
           @position = position
           return
 
         dropItem: ->
-          return  unless theList.draggedItem?
+          return  unless theItem.draggedItem?
           
-          originalStyle = theList.draggedItem.data "original-style"
-          theList.draggedItem.attr "style", originalStyle
-          theList.draggedItem.removeAttr "style"  if originalStyle is ""
-          theList.draggedItem.removeData "original-style"
-          theList.styleDragHandlers true
-          theList.placeHolderItem.before theList.draggedItem
-          theList.placeHolderItem.remove()
+          originalStyle = theItem.draggedItem.data "original-style"
+          theItem.draggedItem.attr "style", originalStyle
+          theItem.draggedItem.removeAttr "style"  if originalStyle is ""
+          theItem.draggedItem.removeData "original-style"
+          theItem.styleDragHandlers true
+          theItem.placeHolderItem.before theItem.draggedItem
+          theItem.placeHolderItem.remove()
           $(":data(droptarget)").remove()
-          opts.window.clearInterval theList.scroll.scrollY
-          opts.window.clearInterval theList.scroll.scrollX
+          opts.window.clearInterval theItem.scroll.scrollY
+          opts.window.clearInterval theItem.scroll.scrollX
           
           #if position changed call callback
-          opts.callback.apply theList.draggedItem  unless theList.draggedItem.data("original-position") is $(listCache).index(theList) + "-" + theList.getItems().index(theList.draggedItem)
-          theList.draggedItem.removeData "original-position"
-          theList.draggedItem = null
-          $(opts.document).off "mousemove", theList.swapItems
-          $(opts.document).off "mouseup", theList.dropItem
+          opts.callback.apply theItem.draggedItem  unless theItem.draggedItem.data("original-position") is $(listCache).index(theItem) + "-" + theItem.getItems().index(theItem.draggedItem)
+          theItem.draggedItem.removeData "original-position"
+          theItem.draggedItem = null
+          $(opts.document).off "mousemove", theItem.swapItems
+          $(opts.document).off "mouseup", theItem.dropItem
           false
 
         #swap the draggedItem (represented visually by placeholder) with the list item the it has been dragged on top of
         swapItems: (evt) ->
-          return false unless theList.draggedItem?
+          return false unless theItem.draggedItem?
           
           #move draggedItem to mouse location
-          theList.setPos evt.pageX, evt.pageY
+          theItem.setPos evt.pageX, evt.pageY
           
           #retrieve list and item position mouse cursor is over
-          listIndex = theList.findPosition(evt.pageX, evt.pageY)
-          aList = theList
+          listIndex = theItem.findPosition(evt.pageX, evt.pageY)
+          aList = theItem
           return false if listIndex is -1
           
           #save fixed items locations
@@ -235,10 +233,10 @@
             return
 
           #if moving draggedItem up or left place placeHolder before list item the dragged item is hovering over otherwise place it after
-          if not lastPosition? or lastPosition.top > theList.draggedItem.offset().top or lastPosition.left > theList.draggedItem.offset().left
-            $(aList.position[listIndex].elm).before theList.placeHolderItem
+          if not lastPosition? or lastPosition.top > theItem.draggedItem.offset().top or lastPosition.left > theItem.draggedItem.offset().left
+            $(aList.position[listIndex].elm).before theItem.placeHolderItem
           else
-            $(aList.position[listIndex].elm).after theList.placeHolderItem
+            $(aList.position[listIndex].elm).after theItem.placeHolderItem
           
           #restore fixed items location
           fixed.each ->
@@ -252,7 +250,7 @@
             l.buildPositionTable()
             return
 
-          lastPosition = theList.draggedItem.offset()
+          lastPosition = theItem.draggedItem.offset()
           false
 
         #returns the index of the item that the mouse is over
