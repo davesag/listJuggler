@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+
+  <title>listJuggler Example Use</title>
+  <!-- Load local jQuery. This can be overridden with a ?jquery=___ param. -->
+  <script src="../libs/jquery-loader.js"></script>
+  
+  <!-- boostrap is not essential but makes it nicer -->
+  <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+  <script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+
+  <!-- In your actual code you'd use the scripts in the dist/ folder. -->
+  <script src="../build/dataMatcher.js"></script>
+  <script src="../build/listJuggler.js"></script>
+  <script src="../build/iFrameReady.js"></script>
+</head>
+<body>
+  <div class="container">
+    <div class="jumbotron">
+      <h2>listJuggler <small>Juggles lists good!</small></h2>
+      <p>When the lists are in an iFrame but the script is in the parent page.</p>
+      <a class="btn btn-primary" href="example.html">See regular Example</a>
+      <a class="btn btn-primary" href="iFrameExample.html">See other iFrame Example</a>
+    </div>
+  <div class="container">
+    <h2>And in an iFrame <small>with the script in the parent</small></h2>
+    <div class="alert alert-danger">
+      <p class="text-danger">
+        <span class="glyphicon glyphicon-bullhorn"></span>
+        Not currently working. See
+        <a class="alert-link" href="http://stackoverflow.com/questions/24603580/how-can-i-access-the-dom-elements-within-an-iframe">this Stackoverflow question</a> for more details.
+      </p>
+    </div>
+    <div class="well center-block">
+      <iframe src="iFrameContentsScriptless.html" width="100%"></iframe>
+    </div>
+  </div>
+  <div class="container">
+    <a class="btn btn-danger" href="https://github.com/davesag/listJuggler/blob/scriptless-iframe/example/iframeExternallyReferencedExample.html">Source Code</a>
+  </div>
+  <script>
+    $(document).ready(function(){
+      var myFrame = $("iframe"),
+          myDocument = myFrame.contents(),
+          myElements;
+      iFrameReady(myFrame.get(0), function() {
+        myElements = myDocument.find("ul, ol");
+        console.debug("success - iFrame", myFrame, "document", myDocument, "elements", myElements);
+        myElements.listJuggler({
+          document: myFrame.get(0).contentDocument,
+          window: myFrame.get(0).contentWindow
+        });
+      });
+    });
+  </script>
+</body>
+</html>
