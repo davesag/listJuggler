@@ -1,8 +1,9 @@
 (function() {
   window.iFrameReady = function(iFrame, fn) {
     var addEvent, checkLoaded, fired, ready, readyState, timer;
+    timer = void 0;
+    fired = false;
     ready = function() {
-      var fired;
       if (!fired) {
         fired = true;
         clearTimeout(timer);
@@ -24,7 +25,7 @@
       }
     };
     checkLoaded = function() {
-      var doc, timer;
+      var doc;
       doc = iFrame.contentDocument || iFrame.contentWindow.document;
       if (doc.URL.indexOf("about:") !== 0) {
         if (doc.readyState === "complete") {
@@ -37,8 +38,6 @@
         timer = setTimeout(checkLoaded, 1);
       }
     };
-    timer = void 0;
-    fired = false;
     addEvent(iFrame, "load", function() {
       ready.call(iFrame.contentDocument || iFrame.contentWindow.document);
     });
