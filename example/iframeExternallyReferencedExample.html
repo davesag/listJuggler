@@ -43,9 +43,9 @@
   <script>
     $(document).ready(function(){
       var myFrame = $("iframe"),
-          myDocument = myFrame.contents(),
-          myElements;
+          myDocument, myElements;
       iFrameReady(myFrame.get(0), function() {
+        myDocument = myFrame.contents();
         myElements = myDocument.find("ul, ol");
         console.debug("success - iFrame", myFrame, "document", myDocument, "elements", myElements);
         myElements.listJuggler({
