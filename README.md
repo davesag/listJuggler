@@ -106,6 +106,7 @@ to manually sort elements in a list.
 
 I first looked at using [jQueryUI](http://jqueryui.com/sortable/) but decided there had to be a much lighter-weight way to achieve this.
 
-Then I found [Dragsort](http://dragsort.codeplex.com) which was cool but hadn't been updated in a couple of years and which also didn't work when called on elelemnts within iFrames, something I specifically needed.
+Then I found [Dragsort](http://dragsort.codeplex.com) which was cool but hadn't been updated in a couple of years and which also didn't work when called on elements within iFrames, something I specifically needed. And I didn't need all the other
+fancy stuff that Dragsort does.
 
 So I decided to roll my own, using Dragsort as a template, but rewriting it pretty much completely from the ground up and in Coffeescript, and with unit tests.
