@@ -27,8 +27,8 @@ $(document).ready(function(){
 ```javascript
 $(document).ready(function(){
   $("ol").listJuggler({
-    callback: function(item){
-      console.log("yay - an item dropped", item);
+    callback: function(item, container){
+      console.log("yay - an item dropped", item, "from within", container);
     }
   });
 });
@@ -89,9 +89,9 @@ This will output the final distribution files into the `dist/` folder, prefixed 
 
 Files created are:
 
-* `jquery-listJuggler.1.0.1.js` - the 'developer' version.
-* `jquery-listJuggler.1.0.1.min.js` The minified version for production use.
-* `jquery-listJuggler.1.0.1.min.map` The `sourcemap` file for debugging using the minified version.
+* `jquery-listJuggler.1.0.2.js` - the 'developer' version.
+* `jquery-listJuggler.1.0.2.min.js` The minified version for production use.
+* `jquery-listJuggler.1.0.2.min.map` The `sourcemap` file for debugging using the minified version.
 
 ## Thanks
 

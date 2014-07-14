@@ -1,5 +1,5 @@
 /*!
- * A jQuery plugin for manually reordering lists - v1.0.1 - 2014-07-09
+ * A jQuery plugin for manually reordering lists - v1.0.2 - 2014-07-14
  * https://github.com/davesag/listJuggler
  * Copyright (c) 2014 Dave Sag; Licensed MIT
  */
@@ -269,7 +269,7 @@
             opts.window.clearInterval(theItem.scroll.scrollY);
             opts.window.clearInterval(theItem.scroll.scrollX);
             if (theItem.draggedItem.data("original-position") !== $(listCache).index(theItem) + "-" + theItem.getItems().index(theItem.draggedItem)) {
-              opts.callback.apply(theItem.draggedItem);
+              opts.callback(theItem.draggedItem, cont);
             }
             theItem.draggedItem.removeData("original-position");
             theItem.draggedItem = null;

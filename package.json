@@ -2,7 +2,7 @@
   "name": "listJuggler",
   "title": "A jQuery plugin for manually reordering lists",
   "description": "A jQuery Plugin that allows manual reordering of list elements.",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "main": "listJuggler.js",
   "homepage": "https://github.com/davesag/listJuggler",
   "author": {
