@@ -28,8 +28,8 @@ $(document).ready(function(){
 ```javascript
 $(document).ready(function(){
   $("ol").listJuggler({
-    callback: function(item){
-      console.log("yay - an item dropped", item);
+    callback: function(item, container){
+      console.log("yay - an item dropped", item, "within", container);
     }
   });
 });

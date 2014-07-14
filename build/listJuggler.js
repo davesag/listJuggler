@@ -197,7 +197,7 @@
             opts.window.clearInterval(theItem.scroll.scrollY);
             opts.window.clearInterval(theItem.scroll.scrollX);
             if (theItem.draggedItem.data("original-position") !== $(listCache).index(theItem) + "-" + theItem.getItems().index(theItem.draggedItem)) {
-              opts.callback.apply(theItem.draggedItem);
+              opts.callback(theItem.draggedItem, cont);
             }
             theItem.draggedItem.removeData("original-position");
             theItem.draggedItem = null;
