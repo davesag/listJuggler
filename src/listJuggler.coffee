@@ -205,7 +205,7 @@
           opts.window.clearInterval theItem.scroll.scrollX
           
           #if position changed call callback
-          opts.callback(theItem.draggedItem, cont) unless theItem.draggedItem.data("original-position") is $(listCache).index(theItem) + "-" + theItem.getItems().index(theItem.draggedItem)
+          opts.callback(theItem.draggedItem, $(theItem.container)) unless theItem.draggedItem.data("original-position") is $(listCache).index(theItem) + "-" + theItem.getItems().index(theItem.draggedItem)
           theItem.draggedItem.removeData "original-position"
           theItem.draggedItem = null
           $(opts.document).off "mousemove", theItem.swapItems
