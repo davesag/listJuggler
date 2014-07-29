@@ -45,7 +45,9 @@
           return
         grabItem: (evt) ->
           #if not left click or if clicked on excluded element (evt.g. text box) or not a moveable list item return
-          return if evt.which isnt 1 or $(evt.target).closest(listItemTag).size() is 0
+          return if evt.which isnt 1 or
+            $(evt.target).closest("#{listItemTag}").size() is 0 or
+            $(evt.target).closest(opts.clickableSelectors.join(",")).size() isnt 0
           evt.preventDefault()
           dragHandle = evt.target
           until $(dragHandle).is(listItemTag)
@@ -191,7 +193,7 @@
           return
 
         dropItem: ->
-          return  unless theItem.draggedItem?
+          return unless theItem.draggedItem?
           
           originalStyle = theItem.draggedItem.data "original-style"
           theItem.draggedItem.attr "style", originalStyle
@@ -268,6 +270,12 @@
     return this
 
   $.fn.listJuggler.defaults =
+    clickableSelectors: [
+      "BUTTON"
+      "A"
+      "INPUT"
+      "SELECT"
+    ]
     callback: ->
       return
     document: document
