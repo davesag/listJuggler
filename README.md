@@ -42,8 +42,18 @@ This happens when you are writing **browser extensions** for example.
 ```javascript
 $(document).ready(function(){
   $("ol").listJuggler({
-    document: $("iframe").get(0).contentDocument
+    document: $("iframe").get(0).contentDocument,
     window: $("iframe").get(0).contentWindow
+  });
+});
+```
+
+You can also override the standard `clickableSelectors`. These items will accept any click events instead of the plugin using that event to pick up the list item and move it.
+
+```javascript
+$(document).ready(function(){
+  $("ol").listJuggler({
+    clickableSelectors: ["A,BUTTON,INPUT,SELECT"] // defaults.
   });
 });
 ```
