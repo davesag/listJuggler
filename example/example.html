@@ -24,7 +24,7 @@
       <a class="btn btn-primary" href="iFrameExternallyReferencedExample.html">or an Externally referenced iFrame example</a>
     </div>
     <div class="row">
-      <div class="col-sm-6">
+      <div class="col-sm-4">
         <h2>Yet another List</h2>
         <ol>
           <li>One</li>
@@ -34,7 +34,7 @@
           <li>Shoe</li>
         </ol>
       </div>
-      <div class="col-sm-6">
+      <div class="col-sm-4">
         <h2>And another unordered List</h2>
         <ul>
           <li>Don't</li>
@@ -43,6 +43,15 @@
           <li>It's</li>
           <li>Christmas</li>
           <li>Time?</li>
+        </ul>
+      </div>
+     <div class="col-sm-4">
+        <h2>And one with buttons</h2>
+        <ul>
+          <li><button class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-minus-sign"></span></button> Chocolate</li>
+          <li><button class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-minus-sign"></span></button> Butter</li>
+          <li><button class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-minus-sign"></span></button> Milk</li>
+          <li><button class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-minus-sign"></span></button> ugar</li>
         </ul>
       </div>
     </div>
@@ -54,6 +63,16 @@
   <script>
     $(document).ready(function(){
       $("ul, ol").listJuggler();
+      $(document).on("click", "button", function(evt) {
+        $this = $(this);
+        $item = $this.closest("li");
+        $siblings = $item.siblings();
+        if ($siblings.length == 1) {
+          $siblings.find("button").addClass("disabled").prop("disabled", true);
+        }
+        $item.remove();
+        evt.stopPropagation();
+      });
     });
   </script>
 </body>

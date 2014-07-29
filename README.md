@@ -29,7 +29,7 @@ $(document).ready(function(){
 $(document).ready(function(){
   $("ol").listJuggler({
     callback: function(item, container){
-      console.log("yay - an item dropped", item, "within", container);
+      console.log("yay - an item dropped", item, "from within", container);
     }
   });
 });
@@ -43,11 +43,66 @@ This happens when you are writing **browser extensions** for example.
 ```javascript
 $(document).ready(function(){
   $("ol").listJuggler({
-    document: $("iframe").get(0).contentDocument
+    document: $("iframe").get(0).contentDocument,
     window: $("iframe").get(0).contentWindow
   });
 });
 ```
+
+You can also override the standard `clickableSelectors`. These items will accept any click events instead of the plugin using that event to pick up the list item and move it.
+
+```javascript
+$(document).ready(function(){
+  $("ol").listJuggler({
+    clickableSelectors: ["A,BUTTON,INPUT,SELECT"] // defaults.
+  });
+});
+```
+
+### Examples
+
+See the examples in the `example/` folder or see them all running live at
+https://davesag.github.io/listJuggler
+
+To properly get the iFrameExternallyReferencedExample to work you need to
+run the examples within a local web server.  To do this simply run
+
+    node webServer
+
+Then point your browser to http://locahost:8080
+
+This of course assumes you have `Node.js` installed.
+See the build instructions below for more on that.
+
+## To Build
+
+### First
+
+Assuming you have `Node.js` and `Grunt` installed.
+
+```bash
+npm install
+```
+
+### Test
+
+```bash
+grunt test
+```
+
+### Build
+
+```bash
+grunt
+```
+
+This will output the final distribution files into the `dist/` folder, prefixed with `jquery` and suffixed with the version number you specify in `package.json`.
+
+Files created are:
+
+* `jquery-listJuggler.1.0.2.js` - the 'developer' version.
+* `jquery-listJuggler.1.0.2.min.js` The minified version for production use.
+* `jquery-listJuggler.1.0.2.min.map` The `sourcemap` file for debugging using the minified version.
 
 ## Thanks
 

@@ -52,7 +52,7 @@
           },
           grabItem: function(evt) {
             var $dragHandle, $listItemContainer, dragHandle, iLikeToMoveItMoveIt, item;
-            if (evt.which !== 1 || $(evt.target).closest(listItemTag).size() === 0) {
+            if (evt.which !== 1 || $(evt.target).closest("" + listItemTag).size() === 0 || $(evt.target).closest(opts.clickableSelectors.join(",")).size() !== 0) {
               return;
             }
             evt.preventDefault();
@@ -197,7 +197,7 @@
             opts.window.clearInterval(theItem.scroll.scrollY);
             opts.window.clearInterval(theItem.scroll.scrollX);
             if (theItem.draggedItem.data("original-position") !== $(listCache).index(theItem) + "-" + theItem.getItems().index(theItem.draggedItem)) {
-              opts.callback(theItem.draggedItem, cont);
+              opts.callback(theItem.draggedItem, $(theItem.container));
             }
             theItem.draggedItem.removeData("original-position");
             theItem.draggedItem = null;
@@ -261,6 +261,7 @@
       return this;
     };
     $.fn.listJuggler.defaults = {
+      clickableSelectors: ["BUTTON", "A", "INPUT", "SELECT"],
       callback: function() {},
       document: document,
       window: window
